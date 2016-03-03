@@ -28,8 +28,6 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
 
 	@Override
 	public void beforeJob(JobExecution jobExecution) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

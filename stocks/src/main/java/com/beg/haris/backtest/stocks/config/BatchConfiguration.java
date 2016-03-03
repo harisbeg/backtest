@@ -44,8 +44,6 @@ public class BatchConfiguration {
     public DataSource dsBacktest;
     
     private static String insertSqlString = "INSERT INTO backtest.stock (ticker) VALUES (:ticker)";
-//    		+ "SELECT :ticker FROM dual WHERE NOT EXISTS "
-//    		+ "(SELECT * FROM backtest.stock WHERE ticker = :ticker)";
     
     @Bean
     public BatchConfigurer configurer() {
@@ -57,18 +55,8 @@ public class BatchConfiguration {
     public FlatFileItemReader<Stock> reader() {
         
     	FlatFileItemReader<Stock> reader = new FlatFileItemReader<Stock>();
-//        DefaultLineMapper<Stock> lineMapper = new DefaultLineMapper<Stock>();
-//        DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-//        BeanWrapperFieldSetMapper<Stock> fieldSetMapper = new BeanWrapperFieldSetMapper<Stock>();
-//
-//        lineTokenizer.setNames(new String[] {"ticker"});
-//        lineMapper.setLineTokenizer(lineTokenizer);
-//        
-//        fieldSetMapper.setTargetType(Stock.class);
-//        lineMapper.setFieldSetMapper(fieldSetMapper);
         
         reader.setResource(new ClassPathResource("stocks-list.csv"));
-//        reader.setLineMapper(lineMapper);
         reader.setLineMapper(new DefaultLineMapper<Stock>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
                 setNames(new String[] { "ticker" });
@@ -82,18 +70,15 @@ public class BatchConfiguration {
     
     @Bean
     public PassThroughItemProcessor<Stock> processor() {
-        //return new StockItemProcessor();
     	return new PassThroughItemProcessor<Stock>();
     }
     
     @Bean
     public JdbcBatchItemWriter<Stock> writer() {
-    	System.out.println("Entered com.beg.haris.backtest.stocks.config.BatchConfiguration.writer()");
         JdbcBatchItemWriter<Stock> writer = new JdbcBatchItemWriter<Stock>();
         writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Stock>());
         writer.setSql(insertSqlString);
         writer.setDataSource(dsBacktest);
-    	System.out.println("Exiting com.beg.haris.backtest.stocks.config.BatchConfiguration.writer()");
         return writer;
     }
     // end::readerwriterprocessor[]
@@ -103,7 +88,6 @@ public class BatchConfiguration {
     @Bean
     public JobExecutionListener listener() {
         return new JobCompletionNotificationListener(new JdbcTemplate(dsBacktest));
-//        return new JobCompletionNotificationListener();
     }
 
     // end::listener[]
@@ -114,7 +98,6 @@ public class BatchConfiguration {
         return jobBuilderFactory.get("importStocksJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(listener())
-//                .repository(jobRepository())
                 .flow(deleteAllStocksStep()).next(mainProcessStep())
                 .end()
                 .build();
