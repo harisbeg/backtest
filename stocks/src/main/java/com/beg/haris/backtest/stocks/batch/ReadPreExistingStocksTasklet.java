@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import com.beg.haris.backtest.stocks.ApplicationConstants;
 import com.beg.haris.backtest.stocks.config.BatchConfiguration;
 import com.beg.haris.backtest.stocks.model.Stock;
 
@@ -55,7 +56,7 @@ public class ReadPreExistingStocksTasklet implements Tasklet, InitializingBean {
 		log.info("Length of existingStocksList in ReadPreExistingStocksTasklet = " + existingStocksList.size());
 		
 		StepContext stepContext = chunkContext.getStepContext();
-		stepContext.getStepExecution().getExecutionContext().put("existingStocksList", existingStocksList);
+		stepContext.getStepExecution().getExecutionContext().put(ApplicationConstants.existingStocksListKey, existingStocksList);
 		
 		return RepeatStatus.FINISHED;
 	}

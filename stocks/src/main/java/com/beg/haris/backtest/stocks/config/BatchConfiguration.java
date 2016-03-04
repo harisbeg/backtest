@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.beg.haris.backtest.stocks.ApplicationConstants;
 import com.beg.haris.backtest.stocks.batch.FilterExistingStocksProcessor;
 import com.beg.haris.backtest.stocks.batch.JobCompletionNotificationListener;
 import com.beg.haris.backtest.stocks.batch.ReadPreExistingStocksTasklet;
@@ -128,7 +129,7 @@ public class BatchConfiguration {
     @Bean
     public ExecutionContextPromotionListener promotionListener() {
     	ExecutionContextPromotionListener promotionListener = new ExecutionContextPromotionListener();
-    	promotionListener.setKeys(new String[] {"existingStocksList"});
+    	promotionListener.setKeys(new String[] { ApplicationConstants.existingStocksListKey });
     	return promotionListener;
     }
 

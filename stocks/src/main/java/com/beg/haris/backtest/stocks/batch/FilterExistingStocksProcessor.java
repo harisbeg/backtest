@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 
+import com.beg.haris.backtest.stocks.ApplicationConstants;
 import com.beg.haris.backtest.stocks.model.Stock;
 
 public class FilterExistingStocksProcessor implements ItemProcessor<Stock, Stock> {
@@ -53,8 +54,8 @@ public class FilterExistingStocksProcessor implements ItemProcessor<Stock, Stock
     public void retrieveInterstepData(StepExecution stepExecution) {
         JobExecution jobExecution = stepExecution.getJobExecution();
         ExecutionContext jobContext = jobExecution.getExecutionContext();
-        if (jobContext.containsKey("existingStocksList")) {
-        	this.existingStocksList = (List<Stock>) jobContext.get("existingStocksList");
+        if (jobContext.containsKey(ApplicationConstants.existingStocksListKey)) {
+        	this.existingStocksList = (List<Stock>) jobContext.get(ApplicationConstants.existingStocksListKey);
         	log.info("Length of existingStocksList passed to FilterExistingStocksProcessor = " + existingStocksList.size());
         } else {
         	log.warn("Job execution context doesn't contain existingStocksList");
