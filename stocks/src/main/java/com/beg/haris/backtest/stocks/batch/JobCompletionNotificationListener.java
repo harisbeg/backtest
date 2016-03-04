@@ -42,9 +42,11 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
 				}
 			});
 
-			for (Stock stock : results) {
-				log.info("Found <" + stock + "> in the database.");
-			}
+			log.info("Found " + results.size() + " stocks in the database.");
+			
+//			for (Stock stock : results) {
+//				log.info("Found <" + stock + "> in the database.");
+//			}
 
 		}
 	}
